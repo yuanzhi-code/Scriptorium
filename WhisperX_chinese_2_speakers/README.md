@@ -4,13 +4,13 @@
 
 ## 功能特点
 
-- 支持中文音频转录
-- 自动识别两个说话人
+- 支持多种语言音频转录
+- 可识别多个说话人
 - 生成带时间戳的转录文本
-- 支持多种音频格式（自动转换为 WAV）
+- 支持多种音频格式（使用 ffmpeg 自动转换为 WAV）
 - 使用 GPU 加速（如果可用）
 - 支持从中间结果继续处理
-- 自动音频格式转换（支持 m4a、mp3 等格式）
+- 自动音频格式转换（支持 m4a、mp3 等 ffmpeg 可转成 wav 格式的格式）
 
 ## 环境要求
 
@@ -20,40 +20,45 @@
 - ffmpeg（用于音频格式转换）
 - uv 包管理器（推荐）
 
-## 模型存储位置
+## 安装步骤
 
-首次运行时，程序会自动下载所需的模型文件。模型文件存储在以下位置：
+1. 安装 ffmpeg（如果尚未安装）：
+   ```bash
+   # macOS
+   brew install ffmpeg
 
-- Linux/Mac: `~/.cache/huggingface/hub/`
-- Windows: `C:\Users\<username>\.cache\huggingface\hub\`
+   # Ubuntu/Debian
+   sudo apt-get install ffmpeg
 
-具体模型文件：
-- Whisper 模型：`models--openai--whisper-<model_size>/`
-- 对齐模型：`models--whisperx--alignment-model-<language>/`
-- 说话人区分模型：`models--pyannote--speaker-diarization/`
+   # Windows
+   # 从 https://ffmpeg.org/download.html 下载并安装
+   ```
 
-注意：确保有足够的磁盘空间，所有模型文件总共需要约 15GB 空间。
+2. 安装 uv 包管理器（如果尚未安装）：
+   ```bash
+   curl -LsSf https://astral.sh/uv/install.sh | sh
+   ```
 
-## 快速开始
-
-1. 克隆项目并进入项目目录：
+3. 克隆项目并进入项目目录：
    ```bash
    cd WhisperX_chinese_2_speakers
    ```
 
-2. 使用 uv 创建虚拟环境并安装依赖：
+4. 使用 uv 创建虚拟环境并安装依赖：
    ```bash
    # 创建虚拟环境
    uv venv
    
    # 激活虚拟环境
-   source .venv/bin/activate
+   source .venv/bin/activate  # Linux/macOS
+   # 或
+   .venv\Scripts\activate  # Windows
    
    # 安装依赖（使用 lock 文件确保版本一致）
    uv pip install -r uv.lock
    ```
 
-3. 设置 Hugging Face Token：
+5. 设置 Hugging Face Token：
    - 访问 [Hugging Face Token 设置页面](https://huggingface.co/settings/tokens)
    - 创建一个新的 Token（确保选择 "Read" 权限）
    - 同意以下模型的使用条款：
