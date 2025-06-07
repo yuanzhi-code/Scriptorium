@@ -17,6 +17,20 @@
 - 足够的磁盘空间用于存储模型
 - uv 包管理器（推荐）
 
+## 模型存储位置
+
+首次运行时，程序会自动下载所需的模型文件。模型文件存储在以下位置：
+
+- Linux/Mac: `~/.cache/huggingface/hub/`
+- Windows: `C:\Users\<username>\.cache\huggingface\hub\`
+
+具体模型文件：
+- Whisper 模型：`models--openai--whisper-<model_size>/`
+- 对齐模型：`models--whisperx--alignment-model-<language>/`
+- 说话人区分模型：`models--pyannote--speaker-diarization/`
+
+注意：确保有足够的磁盘空间，所有模型文件总共需要约 15GB 空间。
+
 ## 快速开始
 
 1. 克隆项目并进入项目目录：

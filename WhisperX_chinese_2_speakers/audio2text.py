@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 # 加载环境变量
 load_dotenv()
 
-def transcribe_and_diarize_two_speakers(audio_file_path, output_txt_path, language=None, model_size="large-v3"):
+def transcribe_and_diarize_two_speakers(audio_file_path, output_txt_path, language=None, model_size="small"):
     """
     使用 WhisperX 转录音频，并明确指示只有两个发言人，然后将结果输出到文本文件。
 
@@ -97,7 +97,7 @@ def transcribe_and_diarize_two_speakers(audio_file_path, output_txt_path, langua
 # --- 如何使用 ---
 if __name__ == "__main__":
     # 设置输入输出路径
-    input_audio_file = "input.wav"  # 替换为您的音频文件路径
+    input_audio_file = "123.m4a"  # 替换为您的音频文件路径
     output_text_file = "output.txt"  # 替换为您想要保存的文本文件路径
 
     try:
@@ -111,7 +111,7 @@ if __name__ == "__main__":
             audio_file_path=input_audio_file,
             output_txt_path=output_text_file,
             language="zh",  # 设置为中文
-            model_size="large-v3"  # 使用最高精度的模型
+            model_size="small"  # 使用最高精度的模型
         )
 
         print(f"\n转录完成！请查看文件: {output_text_file}")
