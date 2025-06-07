@@ -1,20 +1,23 @@
-# WhisperX 中文双人对话转录
+# WhisperX 对话转录
 
-这个项目使用 WhisperX 来转录音频文件，特别适用于中文双人对话场景。它能够自动识别说话人，并生成带有时间戳的转录文本。
+这个项目使用 WhisperX 来转录对话，并支持说话人区分和文本对齐功能。
 
 ## 功能特点
 
 - 支持中文音频转录
 - 自动识别两个说话人
 - 生成带时间戳的转录文本
-- 支持多种音频格式
+- 支持多种音频格式（自动转换为 WAV）
 - 使用 GPU 加速（如果可用）
+- 支持从中间结果继续处理
+- 自动音频格式转换（支持 m4a、mp3 等格式）
 
 ## 环境要求
 
 - Python 3.8 或更高版本
 - CUDA 支持（可选，用于 GPU 加速）
 - 足够的磁盘空间用于存储模型
+- ffmpeg（用于音频格式转换）
 - uv 包管理器（推荐）
 
 ## 模型存储位置
@@ -63,18 +66,34 @@
 
 ## 使用方法
 
-1. 准备您的音频文件（支持 wav、mp3 等格式）
+1. 准备您的音频文件（支持 wav、mp3、m4a 等格式）
 
-2. 运行转录脚本：
-   ```bash
-   python whisperx.py
-   ```
-
-3. 修改代码中的输入输出路径：
+2. 修改 `audio2text.py` 中的输入输出路径：
    ```python
-   input_audio_file = "your_audio_file.wav"  # 替换为您的音频文件路径
+   input_audio_file = "your_audio_file.m4a"  # 替换为您的音频文件路径
    output_text_file = "output.txt"  # 替换为您想要保存的文本文件路径
    ```
+
+3. 运行转录脚本：
+   ```bash
+   python audio2text.py
+   ```
+
+## 高级配置选项
+
+转录函数支持以下参数配置：
+
+```python
+transcribe_and_diarize_two_speakers(
+    audio_file_path="input.m4a",      # 输入音频文件路径
+    output_txt_path="output.txt",     # 输出文本文件路径
+    language="zh",                    # 语言代码（zh 表示中文）
+    model_size="small",               # 模型大小
+    enable_alignment=False,           # 是否启用文本对齐
+    enable_diarization=True,          # 是否启用说话人区分
+    load_intermediate=False           # 是否从中间结果加载
+)
+```
 
 ## 模型大小选项
 
@@ -96,25 +115,6 @@ WhisperX 支持以下模型大小选项，您可以根据需求选择合适的�
   - 需要更好的准确率：选择 `small`（244M 参数）
   - 需要更快的速度：选择 `base`（74M 参数）
 
-模型特点对比：
-- `small` vs `base`：
-  - 准确率：`small` 比 `base` 高约 15-20%
-  - 速度：`base` 比 `small` 快约 30-40%
-  - 内存：两者都约 1GB，但 `small` 稍大
-  - 适用场景：
-    - `small`：一般对话场景，需要平衡速度和准确率
-    - `base`：简单对话场景，对速度要求极高
-
-修改模型大小：
-```python
-transcribe_and_diarize_two_speakers(
-    audio_file_path=input_audio_file,
-    output_txt_path=output_text_file,
-    language="zh",
-    model_size="medium"  # 在这里修改模型大小
-)
-```
-
 ## 输出格式
 
 转录结果将保存在指定的文本文件中，格式如下：
@@ -122,14 +122,6 @@ transcribe_and_diarize_two_speakers(
 [SPEAKER_0] [开始时间 - 结束时间]: 说话内容
 [SPEAKER_1] [开始时间 - 结束时间]: 说话内容
 ```
-
-## 项目文件说明
-
-- `whisperx.py`: 主程序文件
-- `requirements.txt`: 项目依赖列表
-- `uv.lock`: 依赖版本锁定文件（确保环境一致性）
-- `README.md`: 项目说明文档
-- `.env`: 环境变量配置文件（需要自行创建）
 
 ## 注意事项
 
